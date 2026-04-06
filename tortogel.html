@@ -446,6 +446,28 @@
     }
   }
   </script>
+  <!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PG0VKJ9HKB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PG0VKJ9HKB', {
+    'anonymize_ip': true,
+    'send_page_view': true
+  });
+  
+  // Track CTA button clicks (khusus tortogel.html)
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      gtag('event', 'click', {
+        'event_category': 'Conversion',
+        'event_label': this.textContent.trim(),
+        'value': 1
+      });
+    });
+  });
+</script>
 </head>
 <body>
 
