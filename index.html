@@ -489,6 +489,16 @@
     'anonymize_ip': true,
     'send_page_view': true
   });
+  
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      gtag('event', 'click', {
+        'event_category': 'Conversion',
+        'event_label': this.textContent.trim(),
+        'value': 1
+      });
+    });
+  });
 </script>
 </head>
 <body>
