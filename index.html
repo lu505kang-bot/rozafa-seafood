@@ -238,13 +238,20 @@
   </script>
 
 <script>
-    // 1. Mobile Menu Toggle (Tanpa Reflow)
+// Gunakan DOMContentLoaded agar script jalan setelah HTML siap tanpa mengganggu parsing
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Mobile Menu (Gunakan requestAnimationFrame untuk performa visual)
     const mobileMenu = document.getElementById('mobileMenu');
     const navLinks = document.getElementById('navLinks');
     
-    mobileMenu?.addEventListener('click', () => {
-      navLinks?.classList.toggle('active');
-    });
+    if (mobileMenu) {
+      mobileMenu.onclick = () => {
+        window.requestAnimationFrame(() => {
+          navLinks.classList.toggle('active');
+        });
+      };
+    }
 
     // 2. Menu Data & Render (Optimized dengan DocumentFragment)
     const menuData = [
@@ -254,44 +261,39 @@
       {name:"Mediterranean Prawns",desc:"Prawns, chili, garlic, extra virgin olive oil",cat:"shrimp",img:"assets/img-photo-12978524.webp",premium:false}
     ];
 
-    function renderMenu(filter = "all") {
+    const renderMenu = (filter = "all") => {
       const container = document.getElementById("menuContainer");
       if (!container) return;
-      
+
       const filtered = filter === "all" ? menuData : menuData.filter(i => i.cat === filter);
       
-      // Menggunakan innerHTML sekaligus untuk menghindari reflow berulang
-      const htmlContent = filtered.map(item => `
-        <div class="menu-card">
-          <div class="menu-img" style="background-image:url('${item.img}')">
-            ${item.premium ? '<div class="premium-badge">Chef Selection</div>' : ''}
-          </div>
-          <div class="menu-info">
-            <h4>${item.name}</h4>
-            <p>${item.desc}</p>
-            <div class="market-price">Market Price</div>
-          </div>
-        </div>
-      `).join("");
-      
-      container.innerHTML = htmlContent;
+      // Batch update: bangun string dulu, baru masukkan ke DOM sekali saja
+      let html = '';
+      filtered.forEach(item => {
+        html += `
+          <div class="menu-card">
+            <div class="menu-img" style="background-image:url('${item.img}')"></div>
+            <div class="menu-info"><h4>${item.name}</h4><div class="market-price">Market Price</div></div>
+          </div>`;
+      });
+      container.innerHTML = html;
+    };
+
+    // 3. Event Delegation untuk Filter (Menghindari banyak listener)
+    const filterParent = document.getElementById('menuFilters');
+    if (filterParent) {
+      filterParent.onclick = (e) => {
+        const btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMenu(btn.dataset.cat);
+      };
     }
 
-    // 3. Filter Logic (Event Delegation)
-    document.getElementById('menuFilters')?.addEventListener('click', (e) => {
-      const btn = e.target.closest('.cat-btn');
-      if (!btn) return;
-      
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderMenu(btn.dataset.cat);
-    });
-
-    // 4. Smooth Scroll Modern (Native CSS)
-    // Sebenarnya sudah ditangani oleh 'scroll-behavior: smooth' di CSS, 
-    // jadi kita tidak butuh script offset yang berat.
-    
     renderMenu();
-  </script>
+  });
+</script>
 </body>
 </html>
