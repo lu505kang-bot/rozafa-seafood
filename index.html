@@ -236,8 +236,16 @@
     }
   </script>
 
-  <script>
-    // Menu Data & Render
+<script>
+    // 1. Mobile Menu Toggle (Tanpa Reflow)
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navLinks = document.getElementById('navLinks');
+    
+    mobileMenu?.addEventListener('click', () => {
+      navLinks?.classList.toggle('active');
+    });
+
+    // 2. Menu Data & Render (Optimized dengan DocumentFragment)
     const menuData = [
       {name:"Fritto Misto",desc:"Crispy shrimp, tender squid, and small whole fish",cat:"seafood",img:"assets/img-photo-12978518.webp",premium:true},
       {name:"Grilled Whole Lobster",desc:"Fresh Atlantic lobster, garlic herb butter",cat:"lobster",img:"assets/img-photo-12978521.webp",premium:true},
@@ -247,8 +255,12 @@
 
     function renderMenu(filter = "all") {
       const container = document.getElementById("menuContainer");
+      if (!container) return;
+      
       const filtered = filter === "all" ? menuData : menuData.filter(i => i.cat === filter);
-      container.innerHTML = filtered.map(item => `
+      
+      // Menggunakan innerHTML sekaligus untuk menghindari reflow berulang
+      const htmlContent = filtered.map(item => `
         <div class="menu-card">
           <div class="menu-img" style="background-image:url('${item.img}')">
             ${item.premium ? '<div class="premium-badge">Chef Selection</div>' : ''}
@@ -260,20 +272,24 @@
           </div>
         </div>
       `).join("");
+      
+      container.innerHTML = htmlContent;
     }
 
-    // Nav Toggle
-    document.getElementById('mobileMenu').onclick = () => document.getElementById('navLinks').classList.toggle('active');
-
-    // Filter Logic
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-      btn.onclick = function() {
-        document.querySelector('.cat-btn.active').classList.remove('active');
-        this.classList.add('active');
-        renderMenu(this.dataset.cat);
-      }
+    // 3. Filter Logic (Event Delegation)
+    document.getElementById('menuFilters')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.cat-btn');
+      if (!btn) return;
+      
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMenu(btn.dataset.cat);
     });
 
+    // 4. Smooth Scroll Modern (Native CSS)
+    // Sebenarnya sudah ditangani oleh 'scroll-behavior: smooth' di CSS, 
+    // jadi kita tidak butuh script offset yang berat.
+    
     renderMenu();
   </script>
 </body>
