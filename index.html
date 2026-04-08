@@ -364,95 +364,99 @@
     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.rozafaseafood.com/"},{"@type":"ListItem","position":2,"name":"Tortogel Partner","item":"https://www.rozafaseafood.com/tortogel.html"}]}
   </script>
 
-  <!-- Optimized JavaScript (Deferred) -->
-  <script defer>
-    // Critical: Mobile menu toggle
-    document.getElementById('mobileMenu')?.addEventListener('click', () => {
+<script defer>
+  // Mobile menu toggle - NO forced reflow
+  document.getElementById('mobileMenu')?.addEventListener('click', () => {
+    document.getElementById('navLinks')?.classList.toggle('active');
+    // Jangan query offsetWidth/offsetHeight di sini!
+  });
+  
+  // Keyboard accessibility
+  document.getElementById('mobileMenu')?.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
       document.getElementById('navLinks')?.classList.toggle('active');
+    }
+  });
+  
+  // Close menu when clicking links - NO forced reflow
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks')?.classList.remove('active');
     });
+  });
+  
+  // Menu rendering - Batch DOM updates
+  if(document.getElementById('menuContainer')) {
+    const menuData = [
+      {name:"Fritto Misto",desc:"features crispy shell-on shrimp, tender squid, and small whole fish",cat:"seafood",img:"assets/img-photo-12978518.webp",premium:true},
+      {name:"Crudo Mix",desc:"high-quality raw fish and shellfish, typically marinated in a light dressing of extra virgin olive oil",cat:"seafood",img:"assets/img-photo-12978519.webp",premium:false},
+      {name:"Garlic White Wine Mussels",desc:"Fresh mussels, garlic, white wine, grilled bread",cat:"shellfish",img:"assets/img-photo-12978520.webp",premium:false},
+      {name:"Grilled Whole Lobster",desc:"Fresh Atlantic lobster, garlic herb butter",cat:"lobster",img:"assets/img-photo-12978521.webp",premium:true},
+      {name:"Seared Tuna Steak",desc:"Yellowfin tuna, sesame crust, wasabi aioli",cat:"fish",img:"assets/img-photo-12978522.webp",premium:true},
+      {name:"Crispy Calamari",desc:"Lightly fried calamari, house-made tartar",cat:"shellfish",img:"assets/img-photo-12978523.webp",premium:false},
+      {name:"Spicy Mediterranean Prawns",desc:"Prawns, chili, garlic, extra virgin olive oil",cat:"shrimp",img:"assets/img-photo-12978524.webp",premium:false},
+      {name:"Lobster Thermidor",desc:"Classic rich creamy sauce, gratinated with cheese",cat:"lobster",img:"assets/img-photo-12978525.webp",premium:true}
+    ];
     
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('navLinks')?.classList.remove('active');
-      });
-    });
-    
-    // Mobile menu keyboard accessibility
-    document.getElementById('mobileMenu')?.addEventListener('keypress', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        document.getElementById('navLinks')?.classList.toggle('active');
-      }
-    });
-    
-    // Defer: Menu rendering (only if element exists)
-    if(document.getElementById('menuContainer')) {
-      const menuData = [
-        {name:"Fritto Misto",desc:"features crispy shell-on shrimp, tender squid, and small whole fish",cat:"seafood",img:"assets/img-photo-12978518.webp",premium:true},
-        {name:"Crudo Mix",desc:"high-quality raw fish and shellfish, typically marinated in a light dressing of extra virgin olive oil",cat:"seafood",img:"assets/img-photo-12978519.webp",premium:false},
-        {name:"Garlic White Wine Mussels",desc:"Fresh mussels, garlic, white wine, grilled bread",cat:"shellfish",img:"assets/img-photo-12978520.webp",premium:false},
-        {name:"Grilled Whole Lobster",desc:"Fresh Atlantic lobster, garlic herb butter",cat:"lobster",img:"assets/img-photo-12978521.webp",premium:true},
-        {name:"Seared Tuna Steak",desc:"Yellowfin tuna, sesame crust, wasabi aioli",cat:"fish",img:"assets/img-photo-12978522.webp",premium:true},
-        {name:"Crispy Calamari",desc:"Lightly fried calamari, house-made tartar",cat:"shellfish",img:"assets/img-photo-12978523.webp",premium:false},
-        {name:"Spicy Mediterranean Prawns",desc:"Prawns, chili, garlic, extra virgin olive oil",cat:"shrimp",img:"assets/img-photo-12978524.webp",premium:false},
-        {name:"Lobster Thermidor",desc:"Classic rich creamy sauce, gratinated with cheese",cat:"lobster",img:"assets/img-photo-12978525.webp",premium:true}
-      ];
+    function renderMenu(filterCat = "all") {
+      const container = document.getElementById("menuContainer");
+      const filtered = filterCat === "all" ? menuData : menuData.filter(item => item.cat === filterCat);
       
-      function renderMenu(filterCat = "all") {
-        const container = document.getElementById("menuContainer");
-        const filtered = filterCat === "all" ? menuData : menuData.filter(item => item.cat === filterCat);
-        container.innerHTML = filtered.map(item => `
-          <div class="menu-card">
-            <div class="menu-img" style="background-image:url('${item.img}');background-size:cover">
-              ${item.premium ? '<div class="premium-badge"><i class="fas fa-crown" aria-hidden="true"></i> Chef's Selection</div>' : ''}
-            </div>
-            <div class="menu-info">
-              <h4>${item.name}</h4>
-              <p class="menu-desc">${item.desc}</p>
-              <div class="market-price"><i class="fas fa-tag" aria-hidden="true"></i> Market price · Ask our team</div>
-            </div>
+      // Batch DOM update (single innerHTML assignment)
+      container.innerHTML = filtered.map(item => `
+        <div class="menu-card">
+          <div class="menu-img" style="background-image:url('${item.img}');background-size:cover">
+            ${item.premium ? '<div class="premium-badge"><i class="fas fa-crown" aria-hidden="true"></i> Chef's Selection</div>' : ''}
           </div>
-        `).join("");
-      }
-      
-      document.querySelectorAll(".cat-btn").forEach(btn => {
-        btn.addEventListener("click", function() {
-          document.querySelectorAll(".cat-btn").forEach(b => {
-            b.classList.remove("active");
-            b.setAttribute("aria-pressed", "false");
-          });
-          this.classList.add("active");
-          this.setAttribute("aria-pressed", "true");
-          renderMenu(this.getAttribute("data-cat"));
-        });
-      });
-      renderMenu("all");
+          <div class="menu-info">
+            <h4>${item.name}</h4>
+            <p class="menu-desc">${item.desc}</p>
+            <div class="market-price"><i class="fas fa-tag" aria-hidden="true"></i> Market price · Ask our team</div>
+          </div>
+        </div>
+      `).join("");
     }
     
-    // Defer: Form handling
-    document.getElementById('bookingForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('nameRes').value;
-      const date = document.getElementById('dateRes').value;
-      const guests = document.getElementById('guests').value;
-      if(name && date && guests) {
-        alert(`Thank you ${name}! Your table request for ${guests} guests on ${date} has been received. We will contact you shortly to confirm.`);
-        e.target.reset();
-      }
-    });
-    
-    // Defer: Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const href = this.getAttribute('href');
-        if(href === "#" || href === "") return;
-        const target = document.querySelector(href);
-        if(target) { 
-          e.preventDefault(); 
-          target.scrollIntoView({ behavior: "smooth" }); 
-        }
+    // Filter buttons
+    document.querySelectorAll(".cat-btn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        document.querySelectorAll(".cat-btn").forEach(b => {
+          b.classList.remove("active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        this.classList.add("active");
+        this.setAttribute("aria-pressed", "true");
+        renderMenu(this.getAttribute("data-cat"));
       });
     });
-  </script>
+    renderMenu("all");
+  }
+  
+  // Form handling - NO forced reflow
+  document.getElementById('bookingForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('nameRes').value;
+    const date = document.getElementById('dateRes').value;
+    const guests = document.getElementById('guests').value;
+    if(name && date && guests) {
+      alert(`Thank you ${name}! Your table request for ${guests} guests on ${date} has been received.`);
+      e.target.reset();
+    }
+  });
+  
+  // Smooth scroll - NO forced reflow
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if(href === "#" || href === "") return;
+      const target = document.querySelector(href);
+      if(target) { 
+        e.preventDefault(); 
+        target.scrollIntoView({ behavior: "smooth" }); 
+      }
+    });
+  });
+</script>
 </body>
 </html>
