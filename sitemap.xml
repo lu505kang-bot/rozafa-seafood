@@ -6,7 +6,7 @@
 
   <!-- Halaman Utama Rozafa SeaFood -->
   <url>
-    <loc>https://www.rozafaseafood.com/</loc>
+    <loc>https://rozafaseafood.com/</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
 
   <!-- Landing Page Tortogel (AMP) -->
   <url>
-    <loc>https://www.rozafaseafood.com/tortogel.html</loc>
+    <loc>https://rozafaseafood.com/tortogel.html</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -22,28 +22,28 @@
 
   <!-- Section Pages (Optional) -->
   <url>
-    <loc>https://www.rozafaseafood.com/#about</loc>
+    <loc>https://rozafaseafood.com/#about</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.rozafaseafood.com/#menu-section</loc>
+    <loc>https://rozafaseafood.com/#menu-section</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.rozafaseafood.com/#reservation</loc>
+    <loc>https://rozafaseafood.com/#reservation</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.rozafaseafood.com/#contact</loc>
+    <loc>https://rozafaseafood.com/#contact</loc>
     <lastmod>2026-04-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
