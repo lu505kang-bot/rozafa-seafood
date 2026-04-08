@@ -21,18 +21,36 @@
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png">
-  
+<!-- Preload Font Awesome fonts dengan font-display: swap -->
 <link rel="preload" 
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;500;600;700;1,400&display=swap" 
-      as="style" 
-      onload="this.onload=null;this.rel='stylesheet'">
-
-<!-- Preload font files -->
-<link rel="preload" 
-      href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff2" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2" 
       as="font" 
       type="font/woff2" 
       crossorigin>
+
+<link rel="preload" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin>
+
+<!-- Tambahkan CSS custom untuk font-display: swap -->
+<style>
+  @font-face {
+    font-family: 'Font Awesome 6 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-solid-900.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Font Awesome 6 Brands';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/webfonts/fa-brands-400.woff2') format('woff2');
+  }
+</style>
   
   <!-- FULL CSS (All styles - minified for performance) -->
   <style>
