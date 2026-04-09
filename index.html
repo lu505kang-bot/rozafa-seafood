@@ -52,6 +52,16 @@
       .mobile-menu{display:block}
       .hero h2{font-size:2.5rem}
     }
+    .logo h1 {
+  margin: 0; /* Menghilangkan margin bawaan H1 */
+  line-height: 0; /* Agar H1 tidak membuat spasi vertikal aneh */
+}
+
+.logo-img {
+  display: block; /* Mencegah spasi aneh di bawah gambar */
+  max-width: 100%; /* Agar responsif di HP */
+  height: auto; /* Mempertahankan rasio aspek */
+}
   </style>
   
   <!-- GA4 -->
@@ -66,7 +76,17 @@
 <body>
   <nav class="navbar">
     <div class="container nav-container">
-      <div class="logo"><h1>Rozafa<span>SeaFood</span></h1></div>
+      <div class="logo">
+  <h1>
+    <img 
+      src="assets/img/logo-rozafa.webp" 
+      alt="Rozafa SeaFood" 
+      width="150" 
+      height="40" 
+      class="logo-img"
+    >
+  </h1>
+</div>
       <ul class="nav-links" id="navLinks">
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
